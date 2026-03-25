@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía simple: Resistencias, Ley de Ohm y uso del multitester</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #4b5563;
+      --blue: #1d4ed8;
+      --blue-soft: #dbeafe;
+      --green: #047857;
+      --green-soft: #d1fae5;
+      --orange: #c2410c;
+      --orange-soft: #ffedd5;
+      --violet: #6d28d9;
+      --violet-soft: #ede9fe;
+      --red: #b91c1c;
+      --red-soft: #fee2e2;
+      --yellow: #d97706;
+      --yellow-soft: #fef3c7;
+      --cyan: #0891b2;
+      --cyan-soft: #cffafe;
+      --border: #d1d5db;
+      --shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+
+    .cover {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb, #60a5fa);
+      color: white;
+      padding: 36px 28px;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+    }
+
+    .cover h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.1rem;
+    }
+
+    .cover p {
+      margin: 6px 0;
+      font-size: 1.04rem;
+    }
+
+    .section {
+      background: var(--paper);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid #e5e7eb;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--blue);
+      border-bottom: 3px solid var(--blue-soft);
+      padding-bottom: 8px;
+      font-size: 1.6rem;
+    }
+
+    h3 {
+      color: #111827;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    h4 {
+      margin-top: 18px;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    ul, ol {
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .note,
+    .example,
+    .important,
+    .analogy,
+    .activity,
+    .formula,
+    .summary-box,
+    .image-box,
+    .lab-box,
+    .check-box {
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+    }
+
+    .note {
+      background: var(--blue-soft);
+      border-left: 8px solid var(--blue);
+    }
+
+    .example {
+      background: var(--green-soft);
+      border-left: 8px solid var(--green);
+    }
+
+    .important {
+      background: var(--red-soft);
+      border-left: 8px solid var(--red);
+    }
+
+    .analogy {
+      background: var(--orange-soft);
+      border-left: 8px solid var(--orange);
+    }
+
+    .activity {
+      background: var(--yellow-soft);
+      border-left: 8px solid var(--yellow);
+    }
+
+    .formula {
+      background: var(--violet-soft);
+      border-left: 8px solid var(--violet);
+      font-family: "Courier New", monospace;
+      font-size: 1.02rem;
+    }
+
+    .summary-box {
+      background: var(--cyan-soft);
+      border-left: 8px solid var(--cyan);
+    }
+
+    .lab-box {
+      background: #f8fafc;
+      border-left: 8px solid #334155;
+    }
+
+    .check-box {
+      background: #f9fafb;
+      border-left: 8px solid #6b7280;
+    }
+
+    .image-box {
+      background: #f9fafb;
+      border: 2px dashed #9ca3af;
+      text-align: center;
+      color: #6b7280;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-style: italic;
+    }
+
+    .answer-space {
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      min-height: 80px;
+      margin-top: 12px;
+      background: #ffffff;
+    }
+
+    .answer-space-lg {
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      min-height: 140px;
+      margin-top: 12px;
+      background: #ffffff;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      background: #fcfcfd;
+    }
+
+    .card h4 {
+      margin-top: 0;
+      color: var(--blue);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #e0ecff;
+      color: #1e3a8a;
+    }
+
+    .big-center {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--blue);
+      margin: 18px 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin-top: 16px;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .section,
+      .cover {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="cover">
+      <h1>Guía simple: Resistencias, Ley de Ohm y uso del multitester</h1>
+      <p><strong>Estudiante:</strong> Tomás Cifuentes</p>
+      <p><strong>Objetivo:</strong> reconocer resistencias, leer sus bandas de colores, calcular valores simples y medir voltaje, resistencia y corriente con multitester.</p>
+      <p><strong>Meta final:</strong> comprender circuitos básicos con una fuente y resistencias en serie y en paralelo.</p>
+    </header>
+
+    <section class="section">
+      <h2>1. Objetivo general</h2>
+      <p>
+        En esta guía el estudiante aprenderá a reconocer resistencias, identificar sus colores,
+        estimar su valor y comprender cómo trabajan dentro de circuitos eléctricos simples.
+      </p>
+      <p>
+        También se trabajará la ley de Ohm y el uso básico del multitester para medir:
+      </p>
+      <ul>
+        <li>Voltaje</li>
+        <li>Resistencia</li>
+        <li>Corriente</li>
+      </ul>
+
+      <div class="summary-box">
+        <strong>Idea principal:</strong> una resistencia se puede reconocer, leer, medir y luego usar dentro de un circuito simple para analizar cómo circula la electricidad.
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. ¿Qué es una resistencia?</h2>
+      <p>
+        Una <strong>resistencia</strong> es un componente electrónico que se opone al paso de la corriente eléctrica.
+      </p>
+
+      <div class="analogy">
+        <strong>Analogía:</strong> si la corriente eléctrica fuera agua dentro de una cañería,
+        la resistencia sería una parte angosta que dificulta el paso del agua.
+      </div>
+
+      <p>
+        Mientras más grande es el valor de la resistencia, más difícil es que pase la corriente.
+      </p>
+
+      <div class="example">
+        <strong>Ejemplo concreto:</strong>
+        una resistencia puede usarse para proteger un LED, para dividir voltaje o para controlar la corriente dentro de un circuito.
+      </div>
+
+      <div class="image-box">
+        <img src="Resistencias.png" alt="Descripción" width="500" height="400">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. Reconocimiento visual de resistencias</h2>
+      <p>
+        Las resistencias más comunes tienen un cuerpo pequeño y varias bandas de colores.
+        Esas bandas permiten conocer su valor.
+      </p>
+
+      <div class="activity">
+        <p>
+          El estudiante debe observar varias resistencias reales y distinguir:
+        </p>
+        <ol>
+          <li>El cuerpo de la resistencia</li>
+          <li>Sus terminales metálicos</li>
+          <li>Las bandas de colores</li>
+          <li>La banda de tolerancia</li>
+        </ol>
+      </div>
+
+      <div class="image-box">
+        <img src="Variedad.png" alt="Descripción" width="500" height="400">
+      </div>
+
+      <div class="lab-box">
+        <strong>Pregunta:</strong> ¿Cómo se puede distinguir una resistencia de otros componentes pequeños?
+        <div class="answer-space"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. Lectura de bandas de colores</h2>
+      <p>
+        En una resistencia común de 4 bandas:
+      </p>
+      <ul>
+        <li>La primera banda indica el primer número</li>
+        <li>La segunda banda indica el segundo número</li>
+        <li>La tercera banda indica el multiplicador</li>
+        <li>La cuarta banda indica la tolerancia</li>
+      </ul>
+
+      <div class="note">
+        Para leer bien una resistencia, primero hay que orientarla correctamente.
+        La banda de tolerancia suele estar más separada y muchas veces es dorada o plateada.
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Color</th>
+            <th>Número</th>
+            <th>Multiplicador</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Negro</td><td>0</td><td>x1</td></tr>
+          <tr><td>Café</td><td>1</td><td>x10</td></tr>
+          <tr><td>Rojo</td><td>2</td><td>x100</td></tr>
+          <tr><td>Naranjo</td><td>3</td><td>x1000</td></tr>
+          <tr><td>Amarillo</td><td>4</td><td>x10000</td></tr>
+          <tr><td>Verde</td><td>5</td><td>x100000</td></tr>
+          <tr><td>Azul</td><td>6</td><td>x1000000</td></tr>
+          <tr><td>Violeta</td><td>7</td><td>x10000000</td></tr>
+          <tr><td>Gris</td><td>8</td><td>x100000000</td></tr>
+          <tr><td>Blanco</td><td>9</td><td>x1000000000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="image-box">
+        <img src="ejemplo.png" alt="Descripción" width="500" height="300">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. Ejemplos simples de lectura</h2>
+
+      <div class="example">
+        <strong>Ejemplo 1:</strong> rojo, violeta, café, dorado<br />
+        Primer número: 2<br />
+        Segundo número: 7<br />
+        Multiplicador: x10<br />
+        Resultado: 270 Ω
+      </div>
+
+      <div class="example">
+        <strong>Ejemplo 2:</strong> café, negro, rojo, dorado<br />
+        Primer número: 1<br />
+        Segundo número: 0<br />
+        Multiplicador: x100<br />
+        Resultado: 1000 Ω = 1 kΩ
+      </div>
+
+      <div class="example">
+        <strong>Ejemplo 3:</strong> amarillo, violeta, rojo, dorado<br />
+        Primer número: 4<br />
+        Segundo número: 7<br />
+        Multiplicador: x100<br />
+        Resultado: 4700 Ω = 4.7 kΩ
+      </div>
+
+      <div class="lab-box">
+        <strong>Pregunta:</strong> ¿Por qué conviene expresar algunos valores en kΩ y no solo en Ω?
+        <div class="answer-space"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. Actividad: identificar y clasificar resistencias</h2>
+
+      <div class="activity">
+        <p>
+          Observa varias resistencias reales y completa la siguiente tabla.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Resistencia</th>
+            <th>Colores observados</th>
+            <th>Valor leído</th>
+            <th>Valor medido con multitester</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="image-box">
+        <img src="cuadros.png" alt="Descripción" width="500" height="300">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>7. Ley de Ohm</h2>
+      <p>
+        La ley de Ohm permite relacionar tres magnitudes muy importantes:
+      </p>
+      <ul>
+        <li><strong>Voltaje (V)</strong></li>
+        <li><strong>Corriente (I)</strong></li>
+        <li><strong>Resistencia (R)</strong></li>
+      </ul>
+
+      <div class="formula">
+        V = I × R
+      </div>
+
+      <div class="note">
+        Esta fórmula indica que el voltaje es igual a la corriente multiplicada por la resistencia.
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>Para calcular corriente</h4>
+          <div class="formula">I = V / R</div>
+        </div>
+        <div class="card">
+          <h4>Para calcular resistencia</h4>
+          <div class="formula">R = V / I</div>
+        </div>
+      </div>
+
+      <div class="analogy">
+        <strong>Analogía:</strong> el voltaje es como el empuje,
+        la corriente es como el flujo,
+        y la resistencia es como la dificultad del camino.
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>8. Circuito simple: una fuente y una resistencia</h2>
+      <p>
+        El circuito más básico tiene:
+      </p>
+      <ul>
+        <li>Una fuente de voltaje</li>
+        <li>Una sola resistencia</li>
+      </ul>
+
+      <p>
+        En este caso, si conocemos el voltaje de la fuente y el valor de la resistencia,
+        podemos calcular la corriente usando la ley de Ohm.
+      </p>
+
+      <div class="example">
+        <strong>Ejemplo:</strong><br />
+        Fuente = 9 V<br />
+        Resistencia = 1000 Ω<br />
+        Corriente = 9 / 1000 = 0.009 A = 9 mA
+      </div>
+
+      <div class="image-box">
+        <img src="circuito1.png" alt="Descripción" width="800" height="400">
+      </div>
+
+      <div class="lab-box">
+        <strong>Pregunta:</strong> Si la resistencia aumenta, ¿la corriente aumenta o disminuye?
+        <div class="answer-space"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>9. Circuito en serie con 3 resistencias</h2>
+      <p>
+        En un circuito en serie, las resistencias están conectadas una después de otra.
+      </p>
+
+      <div class="summary-box">
+        <strong>Idea principal:</strong> en serie, la corriente es la misma en todos los componentes.
+      </div>
+
+      <div class="formula">
+        Rtotal = R1 + R2 + R3
+      </div>
+
+      <div class="example">
+        <strong>Ejemplo:</strong><br />
+        R1 = 100 Ω<br />
+        R2 = 220 Ω<br />
+        R3 = 330 Ω<br />
+        Rtotal = 650 Ω
+      </div>
+
+      <p>
+        Si la fuente es de 10 V:
+      </p>
+
+      <div class="formula">
+        I = V / Rtotal = 10 / 650
+      </div>
+
+      <div class="image-box">
+        <img src="circuito2.png" alt="Descripción" width="600" height="400">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dato</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Voltaje de la fuente</td><td></td></tr>
+          <tr><td>R1</td><td></td></tr>
+          <tr><td>R2</td><td></td></tr>
+          <tr><td>R3</td><td></td></tr>
+          <tr><td>Resistencia total</td><td></td></tr>
+          <tr><td>Corriente total</td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>10. Circuito en paralelo con 2 resistencias</h2>
+      <p>
+        En un circuito en paralelo, las resistencias están conectadas en ramas separadas.
+      </p>
+
+      <div class="summary-box">
+        <strong>Idea principal:</strong> en paralelo, el voltaje es el mismo en cada rama.
+      </div>
+
+      <div class="formula">
+        1 / Rtotal = 1 / R1 + 1 / R2
+      </div>
+
+      <div class="example">
+        <strong>Ejemplo:</strong><br />
+        R1 = 100 Ω<br />
+        R2 = 100 Ω<br />
+        Entonces Rtotal = 50 Ω
+      </div>
+
+      <p>
+        En paralelo, la resistencia total disminuye.
+      </p>
+
+      <div class="analogy">
+        <strong>Analogía:</strong> si la corriente fuera personas caminando,
+        un paralelo sería como abrir un segundo pasillo. Ahora hay más espacio para pasar.
+      </div>
+
+      <div class="image-box">
+        <img src="circuito3.png" alt="Descripción" width="600" height="400">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dato</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Voltaje de la fuente</td><td></td></tr>
+          <tr><td>R1</td><td></td></tr>
+          <tr><td>R2</td><td></td></tr>
+          <tr><td>Resistencia total</td><td></td></tr>
+          <tr><td>Corriente total</td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>11. Énfasis especial: selección y reconocimiento de materiales</h2>
+
+      <p>
+        Antes de medir o montar un circuito, es importante reconocer bien los materiales.
+      </p>
+
+      <div class="activity">
+        <p>
+          El estudiante debe identificar físicamente:
+        </p>
+        <ul>
+          <li>Resistencias</li>
+          <li>Fuente o pila</li>
+          <li>Cables</li>
+          <li>Protoboard</li>
+          <li>Multitester</li>
+        </ul>
+      </div>
+
+      <div class="important">
+        <strong>Muy importante:</strong> no se debe medir cualquier cosa sin primero reconocer qué componente es y qué función cumple en el circuito.
+      </div>
+
+      <div class="image-box">
+        <img src="materiales.png" alt="Descripción" width="800" height="400">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>12. Uso del multitester: ideas básicas</h2>
+      <p>
+        El multitester sirve para medir distintas magnitudes eléctricas.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>Voltaje</h4>
+          <p>Se mide en paralelo con el elemento o la fuente.</p>
+        </div>
+        <div class="card">
+          <h4>Resistencia</h4>
+          <p>Se mide con el circuito apagado y la resistencia aislada o fuera del circuito si es necesario.</p>
+        </div>
+        <div class="card">
+          <h4>Corriente</h4>
+          <p>Se mide en serie con el circuito.</p>
+        </div>
+      </div>
+
+      <div class="note">
+        Medir corriente es distinto a medir voltaje.
+        En corriente el instrumento debe quedar dentro del camino de la electricidad.
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>13. Medición de resistencia con multitester</h2>
+
+      <ol>
+        <li>Apagar el circuito.</li>
+        <li>Seleccionar la escala de ohmios (Ω).</li>
+        <li>Tomar la resistencia que se quiere medir.</li>
+        <li>Colocar una punta en cada terminal.</li>
+        <li>Leer el valor en pantalla.</li>
+      </ol>
+
+      <div class="important">
+        Nunca se debe medir resistencia en un circuito energizado.
+      </div>
+
+      <div class="image-box">
+        <img src="8.png" alt="Descripción" width="600" height="300">
+      </div>
+
+      <div class="lab-box">
+        <strong>Pregunta:</strong> ¿Por qué se debe apagar el circuito antes de medir resistencia?
+        <div class="answer-space"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>14. Medición de voltaje con multitester</h2>
+
+      <ol>
+        <li>Seleccionar voltaje DC si se trabaja con pilas o fuentes continuas.</li>
+        <li>Conectar la punta negra al COM.</li>
+        <li>Conectar la punta roja a la entrada de voltaje.</li>
+        <li>Medir entre dos puntos del circuito.</li>
+        <li>Leer el valor observado.</li>
+      </ol>
+
+      <div class="summary-box">
+        El voltaje se mide entre dos puntos.
+      </div>
+
+      <div class="image-box">
+        <img src="6.png" alt="Descripción" width="800" height="400">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>15. Medición de corriente con multitester</h2>
+
+      <ol>
+        <li>Apagar el circuito antes de modificar conexiones.</li>
+        <li>Seleccionar la escala correcta de corriente.</li>
+        <li>Mover la punta roja al borne correcto si el multitester lo requiere.</li>
+        <li>Abrir el circuito.</li>
+        <li>Conectar el multitester en serie.</li>
+        <li>Energizar y leer la corriente.</li>
+      </ol>
+
+      <div class="important">
+        <strong>Cuidado:</strong> si se conecta el multitester de corriente en paralelo directamente a la fuente,
+        puede producirse un cortocircuito.
+      </div>
+
+      <div class="image-box">
+        <img src="7.png" alt="Descripción" width="800" height="400">
+      </div>
+
+      <div class="lab-box">
+        <strong>Pregunta:</strong> ¿Cuál es la diferencia principal entre medir voltaje y medir corriente?
+        <div class="answer-space"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>16. Actividad de laboratorio 1: leer y medir resistencias</h2>
+
+      <div class="activity">
+        <ol>
+          <li>Elegir 4 resistencias distintas.</li>
+          <li>Leer sus bandas de colores.</li>
+          <li>Anotar el valor esperado.</li>
+          <li>Medir cada una con el multitester.</li>
+          <li>Comparar el valor leído con el valor medido.</li>
+        </ol>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Resistencia</th>
+            <th>Bandas</th>
+            <th>Valor esperado</th>
+            <th>Valor medido</th>
+            <th>¿Coincide?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>17. Actividad de laboratorio 2: circuito simple con una fuente y una resistencia</h2>
+
+      <div class="activity">
+        <ol>
+          <li>Montar un circuito con una pila y una resistencia.</li>
+          <li>Medir el voltaje de la fuente.</li>
+          <li>Medir la resistencia usada.</li>
+          <li>Calcular la corriente con ley de Ohm.</li>
+          <li>Si es posible, medir la corriente con el multitester.</li>
+        </ol>
+      </div>
+
+      <div class="image-box">
+        <img src="circuito1.png" alt="Descripción" width="800" height="400">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Dato</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Voltaje de la fuente</td><td></td></tr>
+          <tr><td>Valor de la resistencia</td><td></td></tr>
+          <tr><td>Corriente calculada</td><td></td></tr>
+          <tr><td>Corriente medida</td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>18. Actividad de laboratorio 3: circuito serie con 3 resistencias</h2>
+
+      <div class="activity">
+        <ol>
+          <li>Seleccionar tres resistencias.</li>
+          <li>Medir cada una por separado.</li>
+          <li>Conectarlas en serie.</li>
+          <li>Calcular la resistencia total.</li>
+          <li>Montar el circuito con una fuente.</li>
+          <li>Calcular la corriente total.</li>
+          <li>Medir voltajes y corriente si es posible.</li>
+        </ol>
+      </div>
+
+      <div class="image-box">
+        <img src="circuito2.png" alt="Descripción" width="800" height="400">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Magnitud</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>R1</td><td></td></tr>
+          <tr><td>R2</td><td></td></tr>
+          <tr><td>R3</td><td></td></tr>
+          <tr><td>Rtotal</td><td></td></tr>
+          <tr><td>Voltaje de la fuente</td><td></td></tr>
+          <tr><td>Corriente total</td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>19. Actividad de laboratorio 4: circuito paralelo con 2 resistencias</h2>
+
+      <div class="activity">
+        <ol>
+          <li>Seleccionar dos resistencias.</li>
+          <li>Medir sus valores.</li>
+          <li>Conectarlas en paralelo.</li>
+          <li>Calcular la resistencia total.</li>
+          <li>Montar el circuito con una fuente.</li>
+          <li>Medir el voltaje en cada rama.</li>
+        </ol>
+      </div>
+
+      <div class="image-box">
+        <img src="circuito3.png" alt="Descripción" width="800" height="400">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Magnitud</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>R1</td><td></td></tr>
+          <tr><td>R2</td><td></td></tr>
+          <tr><td>Rtotal</td><td></td></tr>
+          <tr><td>Voltaje de la fuente</td><td></td></tr>
+          <tr><td>Voltaje en R1</td><td></td></tr>
+          <tr><td>Voltaje en R2</td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>20. Comparación entre serie y paralelo</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th>Serie</th>
+            <th>Paralelo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Conexión</td>
+            <td>Una después de otra</td>
+            <td>En ramas separadas</td>
+          </tr>
+          <tr>
+            <td>Corriente</td>
+            <td>La misma en todo el circuito</td>
+            <td>Se divide entre ramas</td>
+          </tr>
+          <tr>
+            <td>Voltaje</td>
+            <td>Se reparte</td>
+            <td>Es el mismo en cada rama</td>
+          </tr>
+          <tr>
+            <td>Resistencia total</td>
+            <td>Aumenta</td>
+            <td>Disminuye</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="lab-box">
+        <strong>Pregunta:</strong> ¿Qué tipo de circuito deja pasar más corriente si se usan resistencias iguales: serie o paralelo?
+        <div class="answer-space"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>21. Preguntas finales</h2>
+
+      <ol>
+        <li>¿Qué función cumple una resistencia en un circuito?</li>
+        <li>¿Cómo se lee una resistencia de 4 bandas?</li>
+        <li>¿Qué relación existe entre voltaje, corriente y resistencia?</li>
+        <li>¿Qué diferencia hay entre un circuito serie y uno paralelo?</li>
+        <li>¿Cómo se mide la resistencia con multitester?</li>
+        <li>¿Cómo se mide el voltaje?</li>
+        <li>¿Cómo se mide la corriente?</li>
+        <li>¿Por qué no se debe medir resistencia con el circuito encendido?</li>
+        <li>¿Por qué medir corriente requiere abrir el circuito?</li>
+      </ol>
+
+      <div class="answer-space-lg"></div>
+    </section>
+
+    <section class="section">
+      <h2>22. Conclusión</h2>
+      <p>
+        Comprender resistencias y ley de Ohm permite analizar circuitos básicos y trabajar con más seguridad en electrónica.
+      </p>
+      <p>
+        Saber reconocer materiales y usar correctamente el multitester es una habilidad fundamental para cualquier trabajo de laboratorio.
+      </p>
+
+      <div class="big-center">
+        Primero se reconoce el componente, luego se mide, después se calcula y finalmente se analiza el circuito.
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>23. Criterios simples de evaluación</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Logrado</th>
+            <th>En proceso</th>
+            <th>No logrado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Reconoce resistencias y sus bandas de colores</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Determina el valor de una resistencia</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Usa la ley de Ohm en ejercicios simples</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Distingue circuito serie y paralelo</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Mide voltaje, resistencia y corriente con apoyo</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="important">
+        En Tomás conviene dar prioridad a la observación, reconocimiento visual, medición concreta y explicación oral simple antes que al cálculo complejo.
+      </div>
+    </section>
+
+    <div class="footer">
+      Guía de apoyo — Resistencias, Ley de Ohm y uso del multitester
+    </div>
+  </div>
+</body>
+</html>
