@@ -3,237 +3,222 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ley de Ohm - Presentación | Tomás Cifuentes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <title>Ley de Ohm - Tomás Cifuentes</title>
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-light: #dbeafe;
-      --secondary: #059669;
-      --secondary-light: #d1fae5;
-      --warning: #d97706;
-      --warning-light: #fef3c7;
-      --danger: #dc2626;
-      --danger-light: #fee2e2;
-      --info: #0891b2;
-      --info-light: #cffafe;
-      --bg: #0f172a;
-      --slide-bg: #ffffff;
+      --bg: #f8fafc;
       --text: #1e293b;
       --text-muted: #64748b;
+      --primary: #2563eb;
       --border: #e2e8f0;
-      --shadow: 0 10px 40px rgba(0,0,0,0.15);
-      --radius: 20px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    html, body {
-      height: 100%;
-      font-family: 'Inter', sans-serif;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      overflow: hidden;
+      line-height: 1.7;
+      font-size: 16px;
     }
 
-    /* === PRESENTATION WRAPPER === */
-    .presentation {
-      position: relative;
-      width: 100%;
-      height: 100vh;
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Navigation */
+    .nav-top {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
+      padding: 16px 0;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
     }
 
-    /* === SLIDE CONTAINER === */
+    .nav-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .nav-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .nav-counter {
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Slide Content */
     .slide {
-      position: absolute;
-      width: min(1100px, 95vw);
-      max-height: 90vh;
-      background: var(--slide-bg);
-      border-radius: var(--radius);
-      padding: 32px 40px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateX(40px);
-      transition: all 0.4s ease;
-      overflow-y: auto;
-      scroll-behavior: smooth;
+      display: none;
+      animation: fadeIn 0.3s ease;
     }
 
     .slide.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0);
-      z-index: 10;
+      display: block;
     }
 
-    .slide.exit {
-      opacity: 0;
-      transform: translateX(-40px);
-      visibility: hidden;
-      z-index: 1;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* === COVER SLIDE === */
-    .slide.cover {
-      background: linear-gradient(135deg, var(--primary), #3b82f6, #60a5fa);
-      color: white;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .slide.cover h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      margin-bottom: 28px;
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 24px;
+      color: var(--text);
       line-height: 1.3;
     }
 
-    .cover-meta {
-      display: grid;
-      gap: 14px;
-      max-width: 550px;
-      font-size: 1.15rem;
-      text-align: left;
-      background: rgba(255,255,255,0.12);
-      padding: 20px 28px;
-      border-radius: 14px;
-      backdrop-filter: blur(4px);
+    h2 {
+      font-size: 1.6rem;
+      margin: 24px 0 16px;
+      color: var(--primary);
     }
-
-    .cover-meta strong { color: white; }
-
-    /* === SLIDE HEADER === */
-    .slide-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 18px;
-      margin-bottom: 20px;
-      border-bottom: 3px solid var(--primary-light);
-    }
-
-    .slide-number {
-      background: var(--primary);
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .slide-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
-      color: var(--text);
-      margin: 0;
-      line-height: 1.2;
-    }
-
-    .slide.cover .slide-title { color: white; border: none; }
-
-    /* === CONTENT === */
-    p { margin: 12px 0; font-size: 1.05rem; }
-    ul, ol { padding-left: 28px; margin: 12px 0; }
-    li { margin-bottom: 8px; font-size: 1.02rem; }
 
     h3 {
-      font-size: 1.35rem;
-      color: var(--primary);
-      margin: 22px 0 12px;
-      font-weight: 600;
+      font-size: 1.3rem;
+      margin: 20px 0 12px;
+      color: var(--text);
     }
 
-    strong { color: #0f172a; }
+    h4 {
+      font-size: 1.1rem;
+      margin: 16px 0 10px;
+      color: var(--text);
+    }
 
-    /* === BOXES === */
+    p {
+      margin: 12px 0;
+    }
+
+    ul, ol {
+      padding-left: 28px;
+      margin: 12px 0;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    strong {
+      color: #0f172a;
+    }
+
+    /* Boxes */
     .box {
-      border-radius: 14px;
+      background: white;
+      border-left: 4px solid var(--primary);
       padding: 16px 20px;
-      margin: 16px 0;
-      border-left: 5px solid;
-      font-size: 1.02rem;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+      box-shadow: var(--shadow);
     }
-    .box.note { background: var(--primary-light); border-color: var(--primary); }
-    .box.example { background: var(--secondary-light); border-color: var(--secondary); }
-    .box.important { background: var(--danger-light); border-color: var(--danger); }
-    .box.analogy { background: var(--warning-light); border-color: var(--warning); }
-    .box.activity { background: #fef9c3; border-color: var(--warning); }
-    .box.formula { 
-      background: var(--info-light); 
-      border-color: var(--info); 
+
+    .box.analogy {
+      border-color: #059669;
+      background: #ecfdf5;
+    }
+
+    .box.example {
+      border-color: #d97706;
+      background: #fffbeb;
+    }
+
+    .box.important {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+
+    .box.formula {
+      border-color: #7c3aed;
+      background: #f5f3ff;
       font-family: 'Courier New', monospace;
-      font-weight: 600;
       text-align: center;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
+      font-weight: 600;
     }
-    .box.summary { background: var(--info-light); border-color: var(--info); }
 
     .box-title {
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: block;
-      font-size: 1.05rem;
+      color: var(--text);
     }
 
-    /* === TABLES === */
+    /* Tables */
     .table-container {
       overflow-x: auto;
-      margin: 16px 0;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      background: white;
       font-size: 0.98rem;
-      min-width: 400px;
     }
 
     th {
-      background: var(--primary-light);
-      color: var(--primary);
+      background: var(--primary);
+      color: white;
       padding: 12px 16px;
       text-align: left;
       font-weight: 600;
-      border: 1px solid var(--border);
     }
 
     td {
       padding: 12px 16px;
-      border: 1px solid var(--border);
-      vertical-align: top;
-      background: white;
+      border-bottom: 1px solid var(--border);
     }
 
-    tbody tr:nth-child(even) { background: #f8fafc; }
+    tr:last-child td {
+      border-bottom: none;
+    }
 
-    /* === IMAGES === */
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    /* Images */
     .image-frame {
       background: #f1f5f9;
       border: 2px dashed var(--border);
-      border-radius: 14px;
-      min-height: 180px;
-      max-height: 280px;
+      border-radius: 12px;
+      min-height: 200px;
+      max-height: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 18px 0;
+      margin: 20px 0;
       overflow: hidden;
     }
 
@@ -247,566 +232,762 @@
     .image-caption {
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-style: italic;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
-    /* === GRID === */
+    /* Grid */
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-      margin: 14px 0;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
     }
 
     .card {
-      background: #f8fafc;
+      background: white;
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 8px;
       padding: 16px;
+      box-shadow: var(--shadow);
     }
 
     .card h4 {
+      margin-top: 0;
       color: var(--primary);
-      margin-bottom: 8px;
-      font-size: 1.1rem;
     }
 
-    /* === ANSWER BOXES === */
+    /* Answer boxes */
     .answer-box {
       border: 2px dashed var(--border);
-      border-radius: 10px;
-      min-height: 50px;
-      margin-top: 10px;
-      background: #fafafa;
-      padding: 10px;
+      border-radius: 8px;
+      min-height: 60px;
+      margin-top: 12px;
+      background: white;
+      padding: 12px;
     }
-    .answer-box-lg { min-height: 100px; }
 
-    /* === FORMULAS === */
+    .answer-box-lg {
+      min-height: 120px;
+    }
+
+    /* Formula inline */
     .formula-inline {
-      background: var(--primary-light);
-      padding: 3px 10px;
-      border-radius: 5px;
+      background: #f5f3ff;
+      padding: 2px 8px;
+      border-radius: 4px;
       font-family: 'Courier New', monospace;
       font-weight: 600;
+    }
+
+    /* Cover slide */
+    .cover {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .cover h1 {
+      font-size: 2.2rem;
+      margin-bottom: 32px;
+    }
+
+    .cover-meta {
+      background: white;
+      padding: 24px 32px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      text-align: left;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cover-meta p {
+      margin: 12px 0;
       font-size: 1.05rem;
     }
 
-    /* === NAVIGATION BUTTONS === */
-    .nav-btn {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: white;
-      border: none;
-      font-size: 1.6rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-      transition: all 0.2s ease;
-      z-index: 100;
-      user-select: none;
+    .cover-meta strong {
+      color: var(--primary);
     }
 
-    .nav-btn:hover {
-      background: #1d4ed8;
-      transform: translateY(-50%) scale(1.08);
-      box-shadow: 0 8px 28px rgba(37, 99, 235, 0.6);
-    }
-
-    .nav-btn:active { transform: translateY(-50%) scale(0.98); }
-
-    .nav-btn.prev { left: 25px; }
-    .nav-btn.next { right: 25px; }
-
-    .nav-btn:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-      transform: translateY(-50%);
-      box-shadow: none;
-    }
-
-    .nav-btn:disabled:hover {
-      transform: translateY(-50%);
-      background: #94a3b8;
-    }
-
-    /* === PROGRESS INDICATOR === */
-    .progress {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-      z-index: 100;
-      background: rgba(255,255,255,0.9);
-      padding: 8px 16px;
-      border-radius: 30px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    }
-
-    .progress-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #cbd5e1;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .progress-dot.active {
-      background: var(--primary);
-      transform: scale(1.25);
-    }
-
-    /* === KEYBOARD HINT === */
-    .keyboard-hint {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.95);
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      z-index: 100;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .key {
-      background: #e2e8f0;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-weight: 600;
-      color: var(--text);
-      font-size: 0.8rem;
-    }
-
-    /* === PRINT === */
+    /* Print */
     @media print {
-      body { 
-        background: white; 
-        overflow: visible; 
-        height: auto;
-      }
-      .presentation { 
-        height: auto; 
-        padding: 0; 
-        display: block;
-      }
-      .slide {
-        position: relative;
-        width: 100%;
-        max-height: none;
-        height: auto;
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: none !important;
-        margin-bottom: 20px;
+      .nav-top { display: none; }
+      .slide { 
+        display: block !important; 
         page-break-after: always;
-        box-shadow: none;
-        border: 1px solid #ccc;
       }
-      .slide:last-child { page-break-after: auto; }
-      .nav-btn, .progress, .keyboard-hint { display: none !important; }
+      body { background: white; }
     }
 
-    /* === RESPONSIVE === */
+    /* Responsive */
     @media (max-width: 768px) {
-      .slide { padding: 24px 28px; width: 96vw; }
-      .slide-title { font-size: 1.5rem; }
-      .cover h1 { font-size: 1.9rem; }
-      .nav-btn { width: 48px; height: 48px; font-size: 1.4rem; }
-      .nav-btn.prev { left: 12px; }
-      .nav-btn.next { right: 12px; }
+      .container { padding: 24px 16px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
       .grid-2 { grid-template-columns: 1fr; }
     }
-
-    /* === UTILITIES === */
-    .text-center { text-align: center; }
-    .text-muted { color: var(--text-muted); }
-    .bold { font-weight: 600; }
-    .mt-0 { margin-top: 0; }
-    .mb-0 { margin-bottom: 0; }
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- Navigation -->
+    <div class="nav-top">
+      <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Anterior</button>
+      <span class="nav-counter" id="counter">1 / 23</span>
+      <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente ▶</button>
+    </div>
 
-  <div class="presentation">
-
-    <!-- SLIDE 0: COVER -->
-    <section class="slide cover active" data-slide="0">
-      <h1>Resistencias, Ley de Ohm y Multitester</h1>
-      <div class="cover-meta">
-        <p><strong>👨‍🎓 Estudiante:</strong> Tomás Cifuentes</p>
-        <p><strong>🎯 Objetivo:</strong> Reconocer resistencias, leer bandas de colores y usar el multitester</p>
-        <p><strong>🏁 Meta:</strong> Comprender circuitos básicos en serie y paralelo</p>
+    <!-- SLIDE 1: COVER -->
+    <div class="slide active" data-slide="1">
+      <div class="cover">
+        <h1>Guía simple: Resistencias, Ley de Ohm y uso del multitester</h1>
+        <div class="cover-meta">
+          <p><strong>Estudiante:</strong> Tomás Cifuentes</p>
+          <p><strong>Objetivo:</strong> Reconocer resistencias, leer sus bandas de colores, calcular valores simples y medir voltaje, resistencia y corriente con multitester.</p>
+          <p><strong>Meta final:</strong> Comprender circuitos básicos con una fuente y resistencias en serie y en paralelo.</p>
+        </div>
       </div>
-      <p class="text-center" style="margin-top:24px; opacity:0.9; font-size:1rem;">
-        <em>Usa las flechas ← → o los botones para navegar</em>
-      </p>
-    </section>
-
-    <!-- SLIDE 1 -->
-    <section class="slide" data-slide="1">
-      <div class="slide-header">
-        <span class="slide-number">1</span>
-        <h2 class="slide-title">Objetivo General</h2>
-      </div>
-      <p>En esta guía aprenderás a:</p>
-      <ul>
-        <li>Reconocer resistencias y leer sus bandas de colores</li>
-        <li>Calcular valores simples con la Ley de Ohm</li>
-        <li>Medir voltaje, resistencia y corriente con multitester</li>
-        <li>Analizar circuitos básicos en serie y paralelo</li>
-      </ul>
-      <div class="box summary">
-        <span class="box-title">💡 Idea principal:</span>
-        Una resistencia se puede reconocer, leer, medir y usar dentro de un circuito simple.
-      </div>
-    </section>
+    </div>
 
     <!-- SLIDE 2 -->
-    <section class="slide" data-slide="2">
-      <div class="slide-header">
-        <span class="slide-number">2</span>
-        <h2 class="slide-title">¿Qué es una resistencia?</h2>
+    <div class="slide" data-slide="2">
+      <h2>1. Objetivo general</h2>
+      <p>En esta guía el estudiante aprenderá a reconocer resistencias, identificar sus colores, estimar su valor y comprender cómo trabajan dentro de circuitos eléctricos simples.</p>
+      
+      <p>También se trabajará la ley de Ohm y el uso básico del multitester para medir:</p>
+      <ul>
+        <li>Voltaje</li>
+        <li>Resistencia</li>
+        <li>Corriente</li>
+      </ul>
+
+      <div class="box">
+        <span class="box-title">💡 Idea principal:</span>
+        Una resistencia se puede reconocer, leer, medir y luego usar dentro de un circuito simple para analizar cómo circula la electricidad.
       </div>
-      <p>Una <strong>resistencia</strong> es un componente que se opone al paso de la corriente eléctrica.</p>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" data-slide="3">
+      <h2>2. ¿Qué es una resistencia?</h2>
+      <p>Una <strong>resistencia</strong> es un componente electrónico que se opone al paso de la corriente eléctrica.</p>
+
       <div class="box analogy">
         <span class="box-title">🌊 Analogía:</span>
-        Si la corriente fuera agua en una cañería, la resistencia sería una parte angosta que dificulta el paso del agua.
+        Si la corriente eléctrica fuera agua dentro de una cañería, la resistencia sería una parte angosta que dificulta el paso del agua.
       </div>
+
+      <p>Mientras más grande es el valor de la resistencia, más difícil es que pase la corriente.</p>
+
       <div class="box example">
-        <span class="box-title">✅ Ejemplo:</span>
-        Se usa para proteger un LED, dividir voltaje o controlar corriente en un circuito.
+        <span class="box-title">✅ Ejemplo concreto:</span>
+        Una resistencia puede usarse para proteger un LED, para dividir voltaje o para controlar la corriente dentro de un circuito.
       </div>
+
       <div class="image-frame">
         <img src="Resistencias.png" alt="Tipos de resistencias">
       </div>
       <p class="image-caption">Figura 1: Variedad de resistencias comerciales</p>
-    </section>
+    </div>
 
-    <!-- SLIDE 3 -->
-    <section class="slide" data-slide="3">
-      <div class="slide-header">
-        <span class="slide-number">3</span>
-        <h2 class="slide-title">Reconocimiento Visual</h2>
-      </div>
-      <p>Las resistencias comunes tienen un cuerpo pequeño con bandas de colores que indican su valor.</p>
-      <div class="box activity">
-        <span class="box-title">🔍 Observa y distingue:</span>
+    <!-- SLIDE 4 -->
+    <div class="slide" data-slide="4">
+      <h2>3. Reconocimiento visual de resistencias</h2>
+      <p>Las resistencias más comunes tienen un cuerpo pequeño y varias bandas de colores. Esas bandas permiten conocer su valor.</p>
+
+      <div class="box">
+        <span class="box-title">🔍 El estudiante debe observar varias resistencias reales y distinguir:</span>
         <ol>
           <li>El cuerpo de la resistencia</li>
           <li>Sus terminales metálicos</li>
           <li>Las bandas de colores</li>
-          <li>La banda de tolerancia (usualmente dorada o plateada)</li>
+          <li>La banda de tolerancia</li>
         </ol>
       </div>
+
       <div class="image-frame">
         <img src="Variedad.png" alt="Resistencias con bandas">
       </div>
+
       <div class="box">
         <span class="box-title">❓ Pregunta:</span>
-        ¿Cómo distingues una resistencia de otros componentes pequeños?
+        ¿Cómo se puede distinguir una resistencia de otros componentes pequeños?
         <div class="answer-box"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 4 -->
-    <section class="slide" data-slide="4">
-      <div class="slide-header">
-        <span class="slide-number">4</span>
-        <h2 class="slide-title">Lectura de Bandas de Colores</h2>
+    <!-- SLIDE 5 -->
+    <div class="slide" data-slide="5">
+      <h2>4. Lectura de bandas de colores</h2>
+      <p>En una resistencia común de 4 bandas:</p>
+      <ul>
+        <li>La primera banda indica el primer número</li>
+        <li>La segunda banda indica el segundo número</li>
+        <li>La tercera banda indica el multiplicador</li>
+        <li>La cuarta banda indica la tolerancia</li>
+      </ul>
+
+      <div class="box">
+        <span class="box-title">📍 Importante:</span>
+        Para leer bien una resistencia, primero hay que orientarla correctamente. La banda de tolerancia suele estar más separada y muchas veces es dorada o plateada.
       </div>
-      <p><strong>Resistencia de 4 bandas:</strong></p>
-      <ol>
-        <li>1ª banda → Primer número</li>
-        <li>2ª banda → Segundo número</li>
-        <li>3ª banda → Multiplicador</li>
-        <li>4ª banda → Tolerancia</li>
-      </ol>
-      <div class="box note">
-        <span class="box-title">📍 Tip:</span>
-        Orienta la resistencia con la banda de tolerancia a la derecha (más separada).
-      </div>
+
       <div class="table-container">
         <table>
           <thead>
-            <tr><th>Color</th><th>Número</th><th>Multiplicador</th></tr>
+            <tr>
+              <th>Color</th>
+              <th>Número</th>
+              <th>Multiplicador</th>
+            </tr>
           </thead>
           <tbody>
             <tr><td>Negro</td><td>0</td><td>×1</td></tr>
             <tr><td>Café</td><td>1</td><td>×10</td></tr>
             <tr><td>Rojo</td><td>2</td><td>×100</td></tr>
-            <tr><td>Naranjo</td><td>3</td><td>×1.000</td></tr>
-            <tr><td>Amarillo</td><td>4</td><td>×10.000</td></tr>
-            <tr><td>Verde</td><td>5</td><td>×100.000</td></tr>
-            <tr><td>Azul</td><td>6</td><td>×1.000.000</td></tr>
-            <tr><td>Violeta</td><td>7</td><td>×10.000.000</td></tr>
+            <tr><td>Naranjo</td><td>3</td><td>×1000</td></tr>
+            <tr><td>Amarillo</td><td>4</td><td>×10000</td></tr>
+            <tr><td>Verde</td><td>5</td><td>×100000</td></tr>
+            <tr><td>Azul</td><td>6</td><td>×1000000</td></tr>
+            <tr><td>Violeta</td><td>7</td><td>×10000000</td></tr>
+            <tr><td>Gris</td><td>8</td><td>×100000000</td></tr>
+            <tr><td>Blanco</td><td>9</td><td>×1000000000</td></tr>
           </tbody>
         </table>
       </div>
+
       <div class="image-frame">
         <img src="ejemplo.png" alt="Ejemplo de lectura">
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 5 -->
-    <section class="slide" data-slide="5">
-      <div class="slide-header">
-        <span class="slide-number">5</span>
-        <h2 class="slide-title">Ejemplos de Lectura</h2>
+    <!-- SLIDE 6 -->
+    <div class="slide" data-slide="6">
+      <h2>5. Ejemplos simples de lectura</h2>
+
+      <div class="box example">
+        <span class="box-title">Ejemplo 1:</span>
+        Rojo, violeta, café, dorado<br>
+        Primer número: 2<br>
+        Segundo número: 7<br>
+        Multiplicador: ×10<br>
+        <strong>Resultado: 270 Ω</strong>
       </div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Ejemplo 1</h4>
-          <p><strong>Bandas:</strong> Rojo, Violeta, Café, Dorado</p>
-          <p>2 - 7 - ×10 → <strong>270 Ω</strong></p>
-        </div>
-        <div class="card">
-          <h4>Ejemplo 2</h4>
-          <p><strong>Bandas:</strong> Café, Negro, Rojo, Dorado</p>
-          <p>1 - 0 - ×100 → <strong>1.000 Ω = 1 kΩ</strong></p>
-        </div>
-        <div class="card">
-          <h4>Ejemplo 3</h4>
-          <p><strong>Bandas:</strong> Amarillo, Violeta, Rojo, Dorado</p>
-          <p>4 - 7 - ×100 → <strong>4.700 Ω = 4.7 kΩ</strong></p>
-        </div>
+
+      <div class="box example">
+        <span class="box-title">Ejemplo 2:</span>
+        Café, negro, rojo, dorado<br>
+        Primer número: 1<br>
+        Segundo número: 0<br>
+        Multiplicador: ×100<br>
+        <strong>Resultado: 1000 Ω = 1 kΩ</strong>
       </div>
+
+      <div class="box example">
+        <span class="box-title">Ejemplo 3:</span>
+        Amarillo, violeta, rojo, dorado<br>
+        Primer número: 4<br>
+        Segundo número: 7<br>
+        Multiplicador: ×100<br>
+        <strong>Resultado: 4700 Ω = 4.7 kΩ</strong>
+      </div>
+
       <div class="box">
-        <span class="box-title">❓ Reflexión:</span>
+        <span class="box-title">❓ Pregunta:</span>
         ¿Por qué conviene expresar algunos valores en kΩ y no solo en Ω?
         <div class="answer-box"></div>
       </div>
-    </section>
-
-    <!-- SLIDE 6 -->
-    <section class="slide" data-slide="6">
-      <div class="slide-header">
-        <span class="slide-number">6</span>
-        <h2 class="slide-title">Ley de Ohm</h2>
-      </div>
-      <p>Relaciona tres magnitudes fundamentales:</p>
-      <ul>
-        <li><strong>Voltaje (V)</strong> → El "empuje" eléctrico</li>
-        <li><strong>Corriente (I)</strong> → El flujo de electrones</li>
-        <li><strong>Resistencia (R)</strong> → La oposición al paso</li>
-      </ul>
-      <div class="box formula">V = I × R</div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Para calcular I</h4>
-          <div class="formula-inline">I = V ÷ R</div>
-        </div>
-        <div class="card">
-          <h4>Para calcular R</h4>
-          <div class="formula-inline">R = V ÷ I</div>
-        </div>
-      </div>
-      <div class="box analogy">
-        <span class="box-title">🌊 Analogía:</span>
-        Voltaje = presión del agua | Corriente = caudal | Resistencia = estrechamiento de la tubería
-      </div>
-    </section>
+    </div>
 
     <!-- SLIDE 7 -->
-    <section class="slide" data-slide="7">
-      <div class="slide-header">
-        <span class="slide-number">7</span>
-        <h2 class="slide-title">Circuito Simple: 1 Fuente + 1 Resistencia</h2>
+    <div class="slide" data-slide="7">
+      <h2>6. Actividad: identificar y clasificar resistencias</h2>
+
+      <div class="box">
+        <span class="box-title">📋 Observa varias resistencias reales y completa la siguiente tabla:</span>
       </div>
-      <p>El circuito más básico. Si conocemos V y R, calculamos I con Ohm:</p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Resistencia</th>
+              <th>Colores observados</th>
+              <th>Valor leído</th>
+              <th>Valor medido con multitester</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td></td><td></td><td></td></tr>
+            <tr><td>2</td><td></td><td></td><td></td></tr>
+            <tr><td>3</td><td></td><td></td><td></td></tr>
+            <tr><td>4</td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="image-frame">
+        <img src="cuadros.png" alt="Tabla de registro">
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide" data-slide="8">
+      <h2>7. Ley de Ohm</h2>
+      <p>La ley de Ohm permite relacionar tres magnitudes muy importantes:</p>
+      <ul>
+        <li><strong>Voltaje (V)</strong></li>
+        <li><strong>Corriente (I)</strong></li>
+        <li><strong>Resistencia (R)</strong></li>
+      </ul>
+
+      <div class="box formula">
+        V = I × R
+      </div>
+
+      <div class="box">
+        <span class="box-title">📌 Esta fórmula indica que el voltaje es igual a la corriente multiplicada por la resistencia.</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>Para calcular corriente</h4>
+          <div class="formula-inline">I = V / R</div>
+        </div>
+        <div class="card">
+          <h4>Para calcular resistencia</h4>
+          <div class="formula-inline">R = V / I</div>
+        </div>
+      </div>
+
+      <div class="box analogy">
+        <span class="box-title">🌊 Analogía:</span>
+        El voltaje es como el empuje, la corriente es como el flujo, y la resistencia es como la dificultad del camino.
+      </div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide" data-slide="9">
+      <h2>8. Circuito simple: una fuente y una resistencia</h2>
+      <p>El circuito más básico tiene:</p>
+      <ul>
+        <li>Una fuente de voltaje</li>
+        <li>Una sola resistencia</li>
+      </ul>
+
+      <p>En este caso, si conocemos el voltaje de la fuente y el valor de la resistencia, podemos calcular la corriente usando la ley de Ohm.</p>
+
       <div class="box example">
-        <strong>Datos:</strong><br>
-        Fuente = 9 V | Resistencia = 1.000 Ω<br>
-        <strong>Cálculo:</strong> I = 9 ÷ 1000 = 0.009 A = <strong>9 mA</strong>
+        <span class="box-title">Ejemplo:</span><br>
+        Fuente = 9 V<br>
+        Resistencia = 1000 Ω<br>
+        Corriente = 9 / 1000 = 0.009 A = <strong>9 mA</strong>
       </div>
+
       <div class="image-frame">
         <img src="circuito1.png" alt="Circuito simple">
       </div>
+
       <div class="box">
         <span class="box-title">❓ Pregunta:</span>
         Si la resistencia aumenta, ¿la corriente aumenta o disminuye?
         <div class="answer-box"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 8 -->
-    <section class="slide" data-slide="8">
-      <div class="slide-header">
-        <span class="slide-number">8</span>
-        <h2 class="slide-title">Circuito en Serie (3 Resistencias)</h2>
+    <!-- SLIDE 10 -->
+    <div class="slide" data-slide="10">
+      <h2>9. Circuito en serie con 3 resistencias</h2>
+      <p>En un circuito en serie, las resistencias están conectadas una después de otra.</p>
+
+      <div class="box">
+        <span class="box-title">📌 Idea principal:</span>
+        En serie, la corriente es la misma en todos los componentes.
       </div>
-      <div class="box summary">
-        <span class="box-title">📌 Regla clave:</span>
-        En serie, la <strong>corriente es la misma</strong> en todos los componentes.
+
+      <div class="box formula">
+        R<sub>total</sub> = R₁ + R₂ + R₃
       </div>
-      <div class="box formula">R<sub>total</sub> = R₁ + R₂ + R₃</div>
+
       <div class="box example">
-        <strong>Ejemplo:</strong><br>
-        R₁=100Ω + R₂=220Ω + R₃=330Ω → <strong>R<sub>total</sub> = 650 Ω</strong><br>
-        Con fuente de 10V: I = 10 ÷ 650 ≈ <strong>15.4 mA</strong>
+        <span class="box-title">Ejemplo:</span><br>
+        R₁ = 100 Ω<br>
+        R₂ = 220 Ω<br>
+        R₃ = 330 Ω<br>
+        <strong>R<sub>total</sub> = 650 Ω</strong>
       </div>
+
+      <p>Si la fuente es de 10 V:</p>
+
+      <div class="box formula">
+        I = V / R<sub>total</sub> = 10 / 650
+      </div>
+
       <div class="image-frame">
         <img src="circuito2.png" alt="Circuito en serie">
       </div>
+
       <div class="table-container">
         <table>
-          <thead><tr><th>Dato</th><th>Valor (completar)</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><td>Voltaje fuente</td><td></td></tr>
+            <tr><td>Voltaje de la fuente</td><td></td></tr>
             <tr><td>R₁</td><td></td></tr>
             <tr><td>R₂</td><td></td></tr>
             <tr><td>R₃</td><td></td></tr>
-            <tr><td>R<sub>total</sub></td><td></td></tr>
-            <tr><td>Corriente</td><td></td></tr>
+            <tr><td>Resistencia total</td><td></td></tr>
+            <tr><td>Corriente total</td><td></td></tr>
           </tbody>
         </table>
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 9 -->
-    <section class="slide" data-slide="9">
-      <div class="slide-header">
-        <span class="slide-number">9</span>
-        <h2 class="slide-title">Circuito en Paralelo (2 Resistencias)</h2>
+    <!-- SLIDE 11 -->
+    <div class="slide" data-slide="11">
+      <h2>10. Circuito en paralelo con 2 resistencias</h2>
+      <p>En un circuito en paralelo, las resistencias están conectadas en ramas separadas.</p>
+
+      <div class="box">
+        <span class="box-title">📌 Idea principal:</span>
+        En paralelo, el voltaje es el mismo en cada rama.
       </div>
-      <div class="box summary">
-        <span class="box-title">📌 Regla clave:</span>
-        En paralelo, el <strong>voltaje es el mismo</strong> en cada rama.
+
+      <div class="box formula">
+        1 / R<sub>total</sub> = 1 / R₁ + 1 / R₂
       </div>
-      <div class="box formula">1/R<sub>total</sub> = 1/R₁ + 1/R₂</div>
+
       <div class="box example">
-        <strong>Ejemplo:</strong><br>
-        R₁=100Ω | R₂=100Ω → R<sub>total</sub> = <strong>50 Ω</strong><br>
-        <em>¡En paralelo la resistencia total disminuye!</em>
+        <span class="box-title">Ejemplo:</span><br>
+        R₁ = 100 Ω<br>
+        R₂ = 100 Ω<br>
+        <strong>Entonces R<sub>total</sub> = 50 Ω</strong>
       </div>
+
+      <p>En paralelo, la resistencia total disminuye.</p>
+
       <div class="box analogy">
         <span class="box-title">🚶 Analogía:</span>
-        Si la corriente fueran personas, un paralelo es como abrir un segundo pasillo: ¡hay más espacio para pasar!
+        Si la corriente fuera personas caminando, un paralelo sería como abrir un segundo pasillo. Ahora hay más espacio para pasar.
       </div>
+
       <div class="image-frame">
         <img src="circuito3.png" alt="Circuito en paralelo">
       </div>
-    </section>
 
-    <!-- SLIDE 10 -->
-    <section class="slide" data-slide="10">
-      <div class="slide-header">
-        <span class="slide-number">10</span>
-        <h2 class="slide-title">Uso del Multitester: Conceptos</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Voltaje de la fuente</td><td></td></tr>
+            <tr><td>R₁</td><td></td></tr>
+            <tr><td>R₂</td><td></td></tr>
+            <tr><td>Resistencia total</td><td></td></tr>
+            <tr><td>Corriente total</td><td></td></tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide" data-slide="12">
+      <h2>11. Énfasis especial: selección y reconocimiento de materiales</h2>
+
+      <p>Antes de medir o montar un circuito, es importante reconocer bien los materiales.</p>
+
+      <div class="box">
+        <span class="box-title">🔧 El estudiante debe identificar físicamente:</span>
+        <ul>
+          <li>Resistencias</li>
+          <li>Fuente o pila</li>
+          <li>Cables</li>
+          <li>Protoboard</li>
+          <li>Multitester</li>
+        </ul>
+      </div>
+
+      <div class="box important">
+        <span class="box-title">⚠️ Muy importante:</span>
+        No se debe medir cualquier cosa sin primero reconocer qué componente es y qué función cumple en el circuito.
+      </div>
+
+      <div class="image-frame">
+        <img src="materiales.png" alt="Materiales de laboratorio">
+      </div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide" data-slide="13">
+      <h2>12. Uso del multitester: ideas básicas</h2>
+      <p>El multitester sirve para medir distintas magnitudes eléctricas.</p>
+
       <div class="grid-2">
         <div class="card">
           <h4>🔋 Voltaje</h4>
-          <p>Se mide <strong>en paralelo</strong> con el elemento o fuente.</p>
-          <p class="text-muted"><em>Puntas en los dos puntos a comparar</em></p>
+          <p>Se mide en paralelo con el elemento o la fuente.</p>
         </div>
         <div class="card">
           <h4>🌀 Resistencia</h4>
-          <p>Se mide con el circuito <strong>apagado</strong> y el componente aislado.</p>
-          <p class="text-muted"><em>¡Nunca en circuito energizado!</em></p>
+          <p>Se mide con el circuito apagado y la resistencia aislada o fuera del circuito si es necesario.</p>
         </div>
         <div class="card">
           <h4>⚡ Corriente</h4>
-          <p>Se mide <strong>en serie</strong>: el multitester debe estar dentro del camino de la corriente.</p>
-          <p class="text-muted"><em>Requiere abrir el circuito</em></p>
+          <p>Se mide en serie con el circuito.</p>
         </div>
       </div>
-      <div class="box important">
-        <span class="box-title">⚠️ Seguridad:</span>
-        Medir corriente en paralelo directamente a la fuente puede causar cortocircuito.
-      </div>
-    </section>
 
-    <!-- SLIDE 11 -->
-    <section class="slide" data-slide="11">
-      <div class="slide-header">
-        <span class="slide-number">11</span>
-        <h2 class="slide-title">Cómo Medir Resistencia</h2>
+      <div class="box">
+        <span class="box-title">📍 Importante:</span>
+        Medir corriente es distinto a medir voltaje. En corriente el instrumento debe quedar dentro del camino de la electricidad.
       </div>
+    </div>
+
+    <!-- SLIDE 14 -->
+    <div class="slide" data-slide="14">
+      <h2>13. Medición de resistencia con multitester</h2>
+
       <ol>
-        <li>Apagar completamente el circuito</li>
-        <li>Seleccionar escala de ohmios (Ω)</li>
-        <li>Tomar la resistencia a medir</li>
-        <li>Colocar una punta en cada terminal</li>
-        <li>Leer el valor en pantalla</li>
+        <li>Apagar el circuito.</li>
+        <li>Seleccionar la escala de ohmios (Ω).</li>
+        <li>Tomar la resistencia que se quiere medir.</li>
+        <li>Colocar una punta en cada terminal.</li>
+        <li>Leer el valor en pantalla.</li>
       </ol>
+
+      <div class="box important">
+        <span class="box-title">⚠️ Nunca se debe medir resistencia en un circuito energizado.</span>
+      </div>
+
       <div class="image-frame">
         <img src="8.png" alt="Medición de resistencia">
       </div>
+
       <div class="box">
         <span class="box-title">❓ Pregunta:</span>
         ¿Por qué se debe apagar el circuito antes de medir resistencia?
         <div class="answer-box"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 12 -->
-    <section class="slide" data-slide="12">
-      <div class="slide-header">
-        <span class="slide-number">12</span>
-        <h2 class="slide-title">Cómo Medir Voltaje</h2>
-      </div>
+    <!-- SLIDE 15 -->
+    <div class="slide" data-slide="15">
+      <h2>14. Medición de voltaje con multitester</h2>
+
       <ol>
-        <li>Seleccionar voltaje DC (para pilas/fuentes continuas)</li>
-        <li>Punta negra → COM | Punta roja → VΩ</li>
-        <li>Colocar puntas en los dos puntos a medir</li>
-        <li>Leer el valor observado</li>
+        <li>Seleccionar voltaje DC si se trabaja con pilas o fuentes continuas.</li>
+        <li>Conectar la punta negra al COM.</li>
+        <li>Conectar la punta roja a la entrada de voltaje.</li>
+        <li>Medir entre dos puntos del circuito.</li>
+        <li>Leer el valor observado.</li>
       </ol>
-      <div class="box summary">
-        <span class="box-title">📍 Recordatorio:</span>
-        El voltaje se mide <strong>entre dos puntos</strong>, sin desconectar el circuito.
+
+      <div class="box">
+        <span class="box-title">📍 El voltaje se mide entre dos puntos.</span>
       </div>
+
       <div class="image-frame">
         <img src="6.png" alt="Medición de voltaje">
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 13 -->
-    <section class="slide" data-slide="13">
-      <div class="slide-header">
-        <span class="slide-number">13</span>
-        <h2 class="slide-title">Cómo Medir Corriente</h2>
-      </div>
+    <!-- SLIDE 16 -->
+    <div class="slide" data-slide="16">
+      <h2>15. Medición de corriente con multitester</h2>
+
       <ol>
-        <li>Apagar el circuito antes de modificar conexiones</li>
-        <li>Seleccionar escala de corriente (A o mA)</li>
-        <li>Mover punta roja al borne de corriente si es necesario</li>
-        <li>Abrir el circuito en el punto de medición</li>
-        <li>Conectar el multitester en serie</li>
-        <li>Energizar y leer la corriente</li>
+        <li>Apagar el circuito antes de modificar conexiones.</li>
+        <li>Seleccionar la escala correcta de corriente.</li>
+        <li>Mover la punta roja al borne correcto si el multitester lo requiere.</li>
+        <li>Abrir el circuito.</li>
+        <li>Conectar el multitester en serie.</li>
+        <li>Energizar y leer la corriente.</li>
       </ol>
+
+      <div class="box important">
+        <span class="box-title">⚠️ Cuidado:</span>
+        Si se conecta el multitester de corriente en paralelo directamente a la fuente, puede producirse un cortocircuito.
+      </div>
+
       <div class="image-frame">
         <img src="7.png" alt="Medición de corriente">
       </div>
+
       <div class="box">
         <span class="box-title">❓ Pregunta:</span>
         ¿Cuál es la diferencia principal entre medir voltaje y medir corriente?
         <div class="answer-box"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 14 -->
-    <section class="slide" data-slide="14">
-      <div class="slide-header">
-        <span class="slide-number">14</span>
-        <h2 class="slide-title">Serie vs Paralelo: Comparación</h2>
+    <!-- SLIDE 17 -->
+    <div class="slide" data-slide="17">
+      <h2>16. Actividad de laboratorio 1: leer y medir resistencias</h2>
+
+      <div class="box">
+        <span class="box-title">🔧 Instrucciones:</span>
+        <ol>
+          <li>Elegir 4 resistencias distintas.</li>
+          <li>Leer sus bandas de colores.</li>
+          <li>Anotar el valor esperado.</li>
+          <li>Medir cada una con el multitester.</li>
+          <li>Comparar el valor leído con el valor medido.</li>
+        </ol>
       </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Resistencia</th>
+              <th>Bandas</th>
+              <th>Valor esperado</th>
+              <th>Valor medido</th>
+              <th>¿Coincide?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>4</td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 18 -->
+    <div class="slide" data-slide="18">
+      <h2>17. Actividad de laboratorio 2: circuito simple</h2>
+
+      <div class="box">
+        <span class="box-title">🔧 Instrucciones:</span>
+        <ol>
+          <li>Montar un circuito con una pila y una resistencia.</li>
+          <li>Medir el voltaje de la fuente.</li>
+          <li>Medir la resistencia usada.</li>
+          <li>Calcular la corriente con ley de Ohm.</li>
+          <li>Si es posible, medir la corriente con el multitester.</li>
+        </ol>
+      </div>
+
+      <div class="image-frame">
+        <img src="circuito1.png" alt="Circuito simple">
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Voltaje de la fuente</td><td></td></tr>
+            <tr><td>Valor de la resistencia</td><td></td></tr>
+            <tr><td>Corriente calculada</td><td></td></tr>
+            <tr><td>Corriente medida</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 19 -->
+    <div class="slide" data-slide="19">
+      <h2>18. Actividad de laboratorio 3: circuito serie</h2>
+
+      <div class="box">
+        <span class="box-title">🔧 Instrucciones:</span>
+        <ol>
+          <li>Seleccionar tres resistencias.</li>
+          <li>Medir cada una por separado.</li>
+          <li>Conectarlas en serie.</li>
+          <li>Calcular la resistencia total.</li>
+          <li>Montar el circuito con una fuente.</li>
+          <li>Calcular la corriente total.</li>
+          <li>Medir voltajes y corriente si es posible.</li>
+        </ol>
+      </div>
+
+      <div class="image-frame">
+        <img src="circuito2.png" alt="Circuito en serie">
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Magnitud</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>R₁</td><td></td></tr>
+            <tr><td>R₂</td><td></td></tr>
+            <tr><td>R₃</td><td></td></tr>
+            <tr><td>R<sub>total</sub></td><td></td></tr>
+            <tr><td>Voltaje de la fuente</td><td></td></tr>
+            <tr><td>Corriente total</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 20 -->
+    <div class="slide" data-slide="20">
+      <h2>19. Actividad de laboratorio 4: circuito paralelo</h2>
+
+      <div class="box">
+        <span class="box-title">🔧 Instrucciones:</span>
+        <ol>
+          <li>Seleccionar dos resistencias.</li>
+          <li>Medir sus valores.</li>
+          <li>Conectarlas en paralelo.</li>
+          <li>Calcular la resistencia total.</li>
+          <li>Montar el circuito con una fuente.</li>
+          <li>Medir el voltaje en cada rama.</li>
+        </ol>
+      </div>
+
+      <div class="image-frame">
+        <img src="circuito3.png" alt="Circuito en paralelo">
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Magnitud</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>R₁</td><td></td></tr>
+            <tr><td>R₂</td><td></td></tr>
+            <tr><td>R<sub>total</sub></td><td></td></tr>
+            <tr><td>Voltaje de la fuente</td><td></td></tr>
+            <tr><td>Voltaje en R₁</td><td></td></tr>
+            <tr><td>Voltaje en R₂</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 21 -->
+    <div class="slide" data-slide="21">
+      <h2>20. Comparación entre serie y paralelo</h2>
+
       <div class="table-container">
         <table>
           <thead>
@@ -817,222 +998,115 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td><strong>Conexión</strong></td><td>Uno después de otro</td><td>En ramas separadas</td></tr>
-            <tr><td><strong>Corriente</strong></td><td>Igual en todo el circuito</td><td>Se divide entre ramas</td></tr>
-            <tr><td><strong>Voltaje</strong></td><td>Se reparte entre componentes</td><td>Igual en cada rama</td></tr>
-            <tr><td><strong>R<sub>total</sub></strong></td><td>Aumenta: R₁+R₂+R₃</td><td>Disminuye: 1/(1/R₁+1/R₂)</td></tr>
+            <tr>
+              <td><strong>Conexión</strong></td>
+              <td>Una después de otra</td>
+              <td>En ramas separadas</td>
+            </tr>
+            <tr>
+              <td><strong>Corriente</strong></td>
+              <td>La misma en todo el circuito</td>
+              <td>Se divide entre ramas</td>
+            </tr>
+            <tr>
+              <td><strong>Voltaje</strong></td>
+              <td>Se reparte</td>
+              <td>Es el mismo en cada rama</td>
+            </tr>
+            <tr>
+              <td><strong>Resistencia total</strong></td>
+              <td>Aumenta</td>
+              <td>Disminuye</td>
+            </tr>
           </tbody>
         </table>
       </div>
+
       <div class="box">
-        <span class="box-title">❓ Desafío:</span>
-        ¿Qué configuración deja pasar más corriente con resistencias iguales: serie o paralelo?
+        <span class="box-title">❓ Pregunta:</span>
+        ¿Qué tipo de circuito deja pasar más corriente si se usan resistencias iguales: serie o paralelo?
         <div class="answer-box"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- SLIDE 15 -->
-    <section class="slide" data-slide="15">
-      <div class="slide-header">
-        <span class="slide-number">15</span>
-        <h2 class="slide-title">Actividad: Leer y Medir Resistencias</h2>
-      </div>
-      <div class="box activity">
-        <span class="box-title">🔧 Instrucciones:</span>
-        <ol>
-          <li>Elegir 4 resistencias distintas</li>
-          <li>Leer sus bandas de colores</li>
-          <li>Anotar el valor esperado</li>
-          <li>Medir cada una con el multitester</li>
-          <li>Comparar valor teórico vs. medido</li>
-        </ol>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr><th>#</th><th>Bandas</th><th>Valor teórico</th><th>Valor medido</th><th>¿Coincide?</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>4</td><td></td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="image-frame">
-        <img src="cuadros.png" alt="Tabla de registro">
-      </div>
-    </section>
+    <!-- SLIDE 22 -->
+    <div class="slide" data-slide="22">
+      <h2>21. Preguntas finales</h2>
 
-    <!-- SLIDE 16 -->
-    <section class="slide" data-slide="16">
-      <div class="slide-header">
-        <span class="slide-number">16</span>
-        <h2 class="slide-title">Preguntas de Cierre</h2>
-      </div>
       <ol>
         <li>¿Qué función cumple una resistencia en un circuito?</li>
         <li>¿Cómo se lee una resistencia de 4 bandas?</li>
-        <li>¿Qué relación existe entre V, I y R?</li>
-        <li>¿Qué diferencia hay entre serie y paralelo?</li>
-        <li>¿Cómo se mide resistencia con multitester?</li>
-        <li>¿Por qué no se mide resistencia con el circuito encendido?</li>
+        <li>¿Qué relación existe entre voltaje, corriente y resistencia?</li>
+        <li>¿Qué diferencia hay entre un circuito serie y uno paralelo?</li>
+        <li>¿Cómo se mide la resistencia con multitester?</li>
+        <li>¿Cómo se mide el voltaje?</li>
+        <li>¿Cómo se mide la corriente?</li>
+        <li>¿Por qué no se debe medir resistencia con el circuito encendido?</li>
         <li>¿Por qué medir corriente requiere abrir el circuito?</li>
       </ol>
+
       <div class="answer-box answer-box-lg"></div>
-    </section>
+    </div>
 
-    <!-- SLIDE 17: CONCLUSIÓN -->
-    <section class="slide" data-slide="17">
-      <div class="slide-header">
-        <span class="slide-number">17</span>
-        <h2 class="slide-title">Conclusión</h2>
+    <!-- SLIDE 23 -->
+    <div class="slide" data-slide="23">
+      <h2>22. Conclusión</h2>
+      <p>Comprender resistencias y ley de Ohm permite analizar circuitos básicos y trabajar con más seguridad en electrónica.</p>
+      
+      <p>Saber reconocer materiales y usar correctamente el multitester es una habilidad fundamental para cualquier trabajo de laboratorio.</p>
+
+      <div class="box" style="text-align: center; font-size: 1.15rem; margin-top: 24px;">
+        <strong>🔁 Primero se reconoce el componente, luego se mide, después se calcula y finalmente se analiza el circuito.</strong>
       </div>
-      <p>Comprender resistencias y la Ley de Ohm te permite:</p>
-      <ul>
-        <li>Analizar circuitos básicos con confianza</li>
-        <li>Trabajar con más seguridad en electrónica</li>
-        <li>Usar correctamente el multitester</li>
-      </ul>
-      <div class="box summary text-center" style="margin-top:24px; font-size:1.15rem;">
-        <strong>🔁 Proceso clave:</strong><br>
-        Reconocer → Medir → Calcular → Analizar
-      </div>
-      <p class="text-center text-muted" style="margin-top:30px; font-size:0.95rem;">
-        Guía de apoyo — Profe Pablo Pineda | Ley de Ohm y Multitester
+
+      <p style="text-align: center; margin-top: 32px; color: var(--text-muted);">
+        Guía de apoyo — Resistencias, Ley de Ohm y uso del multitester<br>
+        Profe Pablo Pineda
       </p>
-    </section>
+    </div>
 
-  </div>
-
-  <!-- NAVIGATION BUTTONS -->
-  <button class="nav-btn prev" id="prevBtn" aria-label="Diapositiva anterior">❮</button>
-  <button class="nav-btn next" id="nextBtn" aria-label="Siguiente diapositiva">❯</button>
-
-  <!-- PROGRESS INDICATOR -->
-  <div class="progress" id="progress"></div>
-
-  <!-- KEYBOARD HINT -->
-  <div class="keyboard-hint">
-    <span class="key">←</span>
-    <span class="key">→</span>
-    <span>para navegar</span>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const slides = document.querySelectorAll('.slide');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const progressContainer = document.getElementById('progress');
+    let currentSlide = 1;
+    const totalSlides = 23;
+
+    function changeSlide(direction) {
+      const newSlide = currentSlide + direction;
       
-      let currentSlide = 0;
-      const totalSlides = slides.length;
-
-      // Create progress dots
-      slides.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.className = `progress-dot ${index === 0 ? 'active' : ''}`;
-        dot.addEventListener('click', () => goToSlide(index));
-        progressContainer.appendChild(dot);
-      });
-
-      const progressDots = document.querySelectorAll('.progress-dot');
-
-      function updateButtons() {
-        prevBtn.disabled = currentSlide === 0;
-        nextBtn.disabled = currentSlide === totalSlides - 1;
-      }
-
-      function updateProgress() {
-        progressDots.forEach((dot, index) => {
-          dot.classList.toggle('active', index === currentSlide);
-        });
-      }
-
-      function showSlide(index) {
-        slides.forEach((slide, i) => {
-          slide.classList.remove('active', 'exit');
-          if (i === index) {
-            slide.classList.add('active');
-          } else if (i < index) {
-            slide.classList.add('exit');
-          }
-        });
-        currentSlide = index;
-        updateButtons();
-        updateProgress();
+      if (newSlide >= 1 && newSlide <= totalSlides) {
+        // Hide current slide
+        document.querySelector(`.slide[data-slide="${currentSlide}"]`).classList.remove('active');
         
-        // Scroll to top of slide
-        slides[index].scrollTop = 0;
+        // Show new slide
+        currentSlide = newSlide;
+        document.querySelector(`.slide[data-slide="${currentSlide}"]`).classList.add('active');
+        
+        // Update counter
+        document.getElementById('counter').textContent = `${currentSlide} / ${totalSlides}`;
+        
+        // Update buttons
+        document.getElementById('prevBtn').disabled = currentSlide === 1;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        
+        // Scroll to top
+        window.scrollTo(0, 0);
       }
+    }
 
-      function goToSlide(index) {
-        if (index >= 0 && index < totalSlides) {
-          showSlide(index);
-        }
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        changeSlide(-1);
       }
-
-      function nextSlide() {
-        if (currentSlide < totalSlides - 1) {
-          showSlide(currentSlide + 1);
-        }
-      }
-
-      function prevSlide() {
-        if (currentSlide > 0) {
-          showSlide(currentSlide - 1);
-        }
-      }
-
-      // Event listeners
-      nextBtn.addEventListener('click', nextSlide);
-      prevBtn.addEventListener('click', prevSlide);
-
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ') {
-          e.preventDefault();
-          nextSlide();
-        } else if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          prevSlide();
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          goToSlide(0);
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          goToSlide(totalSlides - 1);
-        }
-      });
-
-      // Touch swipe support
-      let touchStartX = 0;
-      let touchEndX = 0;
-
-      document.querySelector('.presentation').addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-      }, { passive: true });
-
-      document.querySelector('.presentation').addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-      }, { passive: true });
-
-      function handleSwipe() {
-        const swipeThreshold = 50;
-        if (touchStartX - touchEndX > swipeThreshold) {
-          nextSlide(); // swipe left → next
-        } else if (touchEndX - touchStartX > swipeThreshold) {
-          prevSlide(); // swipe right → prev
-        }
-      }
-
-      // Initialize
-      updateButtons();
-      updateProgress();
     });
+
+    // Initialize
+    document.getElementById('prevBtn').disabled = true;
   </script>
 </body>
 </html>
